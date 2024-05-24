@@ -45,7 +45,31 @@ package com.example.leetcode.editor.cn;
 
 public class AddTwoNumbers {
     public static void main(String[] args) {
-        Solution solution = new AddTwoNumbers().new Solution();
+        int[] l3 = new int[]{2, 4, 3};
+        int[] l4 = new int[]{5, 6, 4};
+
+        ListNode l1 = new ListNode();
+        ListNode l2 = new ListNode();
+
+        ListNode pre ;
+
+        pre = l1;
+        for (int i = 0; i < l3.length; i++) {
+            pre.val = l3[i];
+            if (i != l3.length - 1) {
+                pre = (pre.next = new ListNode());
+            }
+        }
+
+        pre = l2;
+        for (int i = 0; i < l4.length; i++) {
+            pre.val = l4[i];
+            if (i != l4.length - 1) {
+                pre = (pre.next = new ListNode());
+            }
+        }
+
+      new AddTwoNumbers().new Solution().addTwoNumbers(l1, l2);
     }
     //leetcode submit region begin(Prohibit modification and deletion)
 
@@ -62,26 +86,51 @@ public class AddTwoNumbers {
     class Solution {
         public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
 
-            return null;
-        }
-    }
+            ListNode pre = new ListNode(0);
+            ListNode cur = pre;
+            int carry = 0;
+            while (l1 != null || l2 != null) {
+                int x = l1 == null ? 0 : l1.val;
+                int y = l2 == null ? 0 : l2.val;
+                int sum = x + y + carry;
 
-    class ListNode {
-        int val;
-        ListNode next;
+                // 是否进位
+                carry = sum / 10;
+                // 取余数，代表当前位数的值。
+                sum = sum % 10;
+                // 将结果放入 pre的后一节点，每次进位
+                cur.next = new ListNode(sum);
 
-        ListNode() {
-        }
-
-        ListNode(int val) {
-            this.val = val;
-        }
-
-        ListNode(int val, ListNode next) {
-            this.val = val;
-            this.next = next;
+                cur = cur.next;
+                if (l1 != null)
+                    l1 = l1.next;
+                if (l2 != null)
+                    l2 = l2.next;
+            }
+            // 判断最后一次运算是否发生进位
+            if (carry == 1) {
+                cur.next = new ListNode(carry);
+            }
+            return pre.next;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
+}
+
+class ListNode {
+    int val;
+    ListNode next;
+
+    ListNode() {
+    }
+
+    ListNode(int val) {
+        this.val = val;
+    }
+
+    ListNode(int val, ListNode next) {
+        this.val = val;
+        this.next = next;
+    }
 }

@@ -52,7 +52,8 @@ import java.util.Map;
 
 public class TwoSum {
     public static void main(String[] args) {
-        Solution solution = new TwoSum().new Solution();
+        int a [] = new int[]{1,2};
+        new TwoSum().new Solution().twoSum(a, 3);
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)

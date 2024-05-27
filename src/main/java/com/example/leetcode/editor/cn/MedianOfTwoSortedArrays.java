@@ -40,16 +40,46 @@
 
 package com.example.leetcode.editor.cn;
 
+import com.alibaba.fastjson.JSON;
+
 public class MedianOfTwoSortedArrays {
     public static void main(String[] args) {
-        new MedianOfTwoSortedArrays().new Solution();
+        new MedianOfTwoSortedArrays().new Solution().findMedianSortedArrays(null, null);
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public double findMedianSortedArrays(int[] nums1, int[] nums2) {
 
-            return 0;
+//            nums1 = new int[]{1,2};
+//            nums2 = new int[]{3,4};
+            int i1 = 0;
+            int i2 = 0;
+            int j = 0;
+            int[] nums = new int[2001];
+
+            // 合并数组，保证顺序, 直至其中一个数组遍历结束
+            while (i1 < nums1.length && i2 < nums2.length) {
+                int i = nums1[i1] > nums2[i2] ? (nums[j++] = nums2[i2++]) : (nums[j++] = nums1[i1++]);
+            }
+            while (i1< nums1.length) {
+                nums[j++] = nums1[i1++];
+            }
+            while (i2< nums2.length) {
+                nums[j++] = nums2[i2++];
+            }
+
+            double ans = 0;
+            int last = j - 1;
+            if (last % 2 == 0) {
+                ans = nums[last / 2];
+            }else {
+                ans = (double) (nums[last/2] + nums[last/2 + 1]) / 2;
+
+            }
+            return ans;
+
+
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)

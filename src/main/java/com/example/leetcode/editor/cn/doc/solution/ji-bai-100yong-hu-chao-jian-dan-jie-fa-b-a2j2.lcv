@@ -1,0 +1,53 @@
+> Problem: [4. 寻找两个正序数组的中位数](https://leetcode.cn/problems/median-of-two-sorted-arrays/description/)
+
+[TOC]
+
+# 思路
+
+> 讲述看到这一题的思路
+
+# 解题方法
+
+> 官方题解非常麻烦
+
+# 复杂度
+
+时间复杂度:
+
+> 击败100%用户，m+n的时间复杂度
+
+# Code
+
+* []
+
+```Java
+class Solution {
+    public static int[] help = new int[20001];// 辅助数组
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int l = 0, r = 0, i = 0;
+        // 对两个数组进行和并，且有序
+        while (l < nums1.length && r < nums2.length) {
+            help[i++] = nums1[l] <= nums2[r] ? nums1[l++] : nums2[r++];
+        }
+
+        while(l < nums1.length) {
+            help[i++] = nums1[l++];
+        }
+
+        while(r < nums2.length) {
+            help[i++] = nums2[r++];
+        }
+        
+        // 计算中位数即可
+        double ans = 0;
+        int last = i - 1;
+        if (last % 2 == 0) {
+            ans =  help[last / 2];
+        }else {
+            ans = (double) (help[last/2] + help[last/2 + 1]) / 2;
+        }
+        return ans;
+    }
+}
+```
+

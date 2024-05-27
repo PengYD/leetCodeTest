@@ -41,12 +41,11 @@
 
 package com.example.leetcode.editor.cn;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class LongestSubstringWithoutRepeatingCharacters {
     public static void main(String[] args) {
-        String a = "qwaswdfgh";
+        String a = " ";
         new LongestSubstringWithoutRepeatingCharacters().new Solution().lengthOfLongestSubstring(a);
     }
 
@@ -54,28 +53,105 @@ public class LongestSubstringWithoutRepeatingCharacters {
     class Solution {
         public int lengthOfLongestSubstring(String s) {
 
-            Map<Character, Integer> map = new HashMap<>();
-            int n = 0;
-            int m = 0;
+            // 字符下标
+            int index = 0;
+            // 重复元素最后出现位置
+            int flag = 0;
+            // 长度
+            int length = 0;
+            // 中间产物
+            int result = 0;
+            while (index < s.length()) {
 
-            int max = 0;
+                // 由于flag 永远小于 i  所以pos不会等于-1，不重复的情况 pos = index，重复的情况pos等于上次出现本元素的位置（小于index）
+                int pos = s.indexOf(s.charAt(index), flag);
 
-            char[] array = s.toCharArray();
-            for (int i = 0; i < array.length; i++) {
-                if (map.containsKey(array[i])) {
-                    // 已有重复, 查询重复字符最后出现位置，并用本次位置替换。
+                // 判断重复  pos表示flag到末尾
+                if (pos < index) {
 
-                    // 计算本次出现重复时 字符长度 与最长字符长度比较
+                    if (length > result) {
+                        result = length;
+                    }
 
-
-                } else {
-                    // 没有重复 记录本次字符 和 所在位置
-
+                    length = index - pos - 1;
+                    flag = pos + 1;
                 }
-                map.put(array[i], i);
+                length++;
+                index++;
             }
 
-            return max;
+            if (result < length) {
+                result = length;
+            }
+
+            System.out.println(result);
+            return result;
+
+
+
+
+
+
+//            // 当前坐标
+//            int i = 0;
+//            // 扫描起点
+//            int flag = 0;
+//            // 长度
+//            int length = 0;
+//            // 中间产物，不重复字符长度。
+//            int result = 0;
+//            while (i < s.length()) {
+//                int pos = s.indexOf(s.charAt(i), flag);
+//                if (pos < i) {
+//                    // 出现重复元素
+//                    if (length > result) {
+//                        // 是否大于上次不重复字符串的长度
+//                        result = length;
+//                    }
+//                    // 不重复字符串长度已超过剩余字符长度 直接返回。
+//                    if (result >= s.length() - pos - 1) {
+//                        return result;
+//                    }
+//                    length = i - pos - 1;
+//                    flag = pos + 1;
+//                }
+//                length++;
+//                i++;
+//            }
+//            return length;
+
+
+
+//            Map<Character, Integer> map = new HashMap<>();
+//
+//            List<String> list = new ArrayList<>();
+//
+//            String str = "";
+//
+//            int max = 0;
+//
+//            char[] array = s.toCharArray();
+//            for (int i = 0; i < array.length; i++) {
+//                if (str.contains(array[i] + "")) {
+//                    // 已有重复, 查询重复字符最后出现位置，并用本次位置替换。
+//                    Integer index = map.get(array[i]);
+//                    int size = str.length();
+//                    str = s.substring(index + 1, i);
+//                    // 计算本次出现重复时 字符长度 与最长字符长度比较
+//                    if (size > max) {
+//                        max = size;
+//                    }
+//                }
+//                str = str + array[i];
+//                // 记录本次字符 和 所在位置
+//                map.put(array[i], i);
+//            }
+//            if (str.length() > max) {
+//                max = str.length();
+//            }
+//
+//            System.out.println(max);
+//            return max;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)

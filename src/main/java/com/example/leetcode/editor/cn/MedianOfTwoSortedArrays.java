@@ -69,7 +69,7 @@ public class MedianOfTwoSortedArrays {
                 nums[j++] = nums2[i2++];
             }
 
-            double ans = 0;
+            double ans ;
             int last = j - 1;
             if (last % 2 == 0) {
                 ans = nums[last / 2];

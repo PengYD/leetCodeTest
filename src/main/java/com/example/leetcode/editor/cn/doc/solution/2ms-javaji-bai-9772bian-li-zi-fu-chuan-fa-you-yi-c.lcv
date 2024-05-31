@@ -1,0 +1,40 @@
+### 解题思路
+
+此处撰写解题思路
+首先判断正负号，进行标记并把字符串用substring处理去掉符号（这样代码和没有符号时相同），然后非数字的和长度小于1的返回0。然后就是遍历字符串，temp就是每个字符对应的int数字。因为ans后面要乘以10，显然在ans>Integer.MAX_VALUE/10的情况下溢出。若等于Integer.MAX_VALUE，在temp不大于7的情况下，ans=ans*10+temp刚好不溢出。最小值也是同理
+![B56FB38F8B25586D09E33E3F4EA5A873.png](https://pic.leetcode-cn.com/e1e5c361cb8a4a325cefd451ea6f32bed79448586a496ca0d10a828c888396c8-B56FB38F8B25586D09E33E3F4EA5A873.png)
+
+### 代码
+
+* java
+
+```java
+class Solution {
+    public int myAtoi(String str) {
+        if(str==null||str.equals("")) return 0;
+        str=str.trim();
+        boolean isNega=false;
+        if(str.length()>=1&&(str.charAt(0)=='-'||str.charAt(0)=='+')){
+            isNega=str.charAt(0)=='-';
+            str=str.substring(1,str.length());
+        }
+        if(str.length()<1||'0'>str.charAt(0)||str.charAt(0)>'9') return 0;
+        int i=0,ans=0;
+        while(i<str.length()&&'0'<=str.charAt(i)&&str.charAt(i)<='9'){
+            int temp=str.charAt(i)-'0';
+            if(isNega) temp*=-1;
+            if(ans>Integer.MAX_VALUE/10||(ans==Integer.MAX_VALUE/10&&temp > 7)){
+                return Integer.MAX_VALUE;
+            }
+            if(ans<Integer.MIN_VALUE/10||(ans==Integer.MIN_VALUE/10&&temp <-8)){
+                return Integer.MIN_VALUE;
+            }
+            ans=ans*10+temp;
+            i++;
+        }
+        return ans;
+        
+    }
+}
+```
+

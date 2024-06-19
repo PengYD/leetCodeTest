@@ -41,18 +41,52 @@
 
 package com.example.leetcode.editor.cn;
 
+import com.sun.deploy.util.StringUtils;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class LetterCombinationsOfAPhoneNumber {
     public static void main(String[] args) {
-        new LetterCombinationsOfAPhoneNumber().new Solution();
+        Solution solution = new LetterCombinationsOfAPhoneNumber().new Solution();
+        solution.letterCombinations("369");
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
+        private String letterMap[] = { " ", //0
+                "", //1
+                "abc", //2
+                "def", //3
+                "ghi", //4
+                "jkl", //5
+                "mno", //6
+                "pqrs", //7
+                "tuv", //8
+                "wxyz" //9
+        };
         public List<String> letterCombinations(String digits) {
+            List<String> rep = new ArrayList<>();
+            if (digits == null || digits.length() == 0) {
+                return rep;
+            }
 
-            return null;
+            StringBuilder s = new StringBuilder();
+            test1(rep, digits, "", 0);
+            return rep;
+        }
+
+        private void test1(List<String> rep, String digits, String s, int i) {
+
+            if (i == digits.length()) {
+                rep.add(s);
+                return;
+            }
+            String s1 = letterMap[digits.charAt(i) - '0'];
+
+            for (int j = 0; j < s1.length(); j++) {
+                test1(rep, digits, s + s1.charAt(j), i + 1);
+            }
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)

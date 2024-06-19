@@ -52,28 +52,70 @@
 
 package com.example.leetcode.editor.cn;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ThreeSum {
     public static void main(String[] args) {
-        new ThreeSum().new Solution();
+        Solution solution = new ThreeSum().new Solution();
+        System.out.println(solution.threeSum(new int[] {-1,0,1,2,-1,-4}));
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public List<List<Integer>> threeSum(int[] nums) {
 
-            Map<Integer, Integer> map = new HashMap<>();
+            List<List<Integer>> rep = new ArrayList<>();
+            if (nums.length < 3) {
+                return rep;
+            }
+            Arrays.sort(nums);
 
-            for (int i = 0; i < nums.length; i++) {
-                map.put(0 - nums[i], i);
+            int i = 0;
+            while (i < nums.length){
+
+                if(nums[i] > 0) {
+                    break;
+                }
+
+                int l = i + 1;
+                int r = nums.length - 1;
+
+                if (i > 0 && nums[i] == nums[i-1]) {
+                    i++;
+                    continue;
+                }
+
+                while (l < r) {
+
+                    int n = nums[i] + nums[l] + nums[r];
+
+                    if (n == 0) {
+                        rep.add(Arrays.asList(nums[i], nums[l],  nums[r]));
+//                        System.out.println(l + " " + i + " " + r);
+                        while (l + 1 < i && nums[l] == nums[l + 1]) {
+                            l++;
+                        }
+                        while (r - 1 > i && nums[r] == nums[r - 1]) {
+                            r--;
+                        }
+                        r--;
+                        l++;
+                       continue;
+                    }
+
+                    if (n > 0) {
+                        r--;
+                    }
+
+                    if (n < 0) {
+                        l++;
+                    }
+                }
+
+                i++;
             }
 
-
-
-            return null;
+            return rep;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)

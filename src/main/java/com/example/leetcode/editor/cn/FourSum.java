@@ -47,7 +47,7 @@ import java.util.List;
 public class FourSum {
     public static void main(String[] args) {
         Solution solution = new FourSum().new Solution();
-        solution.fourSum(new int[]{1000000000,1000000000,1000000000,1000000000}, -294967296);
+        solution.fourSum(new int[]{2,1,0,-1}, 2);
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
@@ -56,54 +56,59 @@ public class FourSum {
             List<List<Integer>> res = new ArrayList<>();
 
             // 长度不够 直接退出
-            if (nums.length < 4) {
+            if (nums.length < 4 || nums == null) {
                 return res;
             }
             Arrays.sort(nums);
 
+            int length = nums.length;
             // 固定第一个数，
-            for (int i = 0; i < nums.length; i++) {
+            for (int i = 0; i < nums.length - 3; i++) {
 
-                // 去掉重复的
-                while (i < nums.length && i > 0 && nums[i] == nums[i - 1]) {
-                    i = i +1;
+                if (i > 0 && nums[i] == nums[i - 1]) {
+                    continue;
                 }
-
-                // j 初始为i后一个元素，并且i后的元素少于三个 退出。 i+j 大于目标值退出。
-                int j = i + 1;
-                if ( i > nums.length - 3 ) {
+                // i 可以匹配到的最小结果 大于目标，则i不符合条件。并且后续都没有符合条件的
+                if ((long) nums[i] + nums[i + 1] + nums[i + 2] + nums[i + 3] > target) {
                     break;
                 }
-                for (; j < nums.length - 2; j++) {
+                // i 可以匹配到的最大结果 小于目标，则i不符合条件。
+                if ((long) nums[i] + nums[length - 3] + nums[length - 2] + nums[length - 1] < target) {
+                    continue;
+                }
 
-                    while (j < nums.length - 2 && j - 1 != i  && nums[j] == nums[j - 1]) {
-                        j++;
+                for ( int j = i + 1; j < nums.length - 2; j++) {
+
+                    if (j > i + 1 && nums[j] == nums[j - 1]) {
+                        continue;
                     }
+                    // i 可以匹配到的最小结果 大于目标，则i不符合条件。并且后续都没有符合条件的
+                    if ((long) nums[i] + nums[j] + nums[j + 1] + nums[j + 2] > target) {
+                        break;
+                    }
+                    // i 可以匹配到的最大结果 小于目标，则i不符合条件。
+                    if ((long) nums[i] + nums[j] + nums[length - 2] + nums[length - 1] < target) {
+                        continue;
+                    }
+
                     int l = j + 1;
                     int r = nums.length - 1;
 
                     while (l < r) {
 
-                        while ( nums.length - 2 > r && nums[r] == nums[r + 1] && r - 1 > l) {
-                            r--;
-                        }
-                        while (l + 1 < r && nums[l] == nums[l - 1] && l-1 != j) {
-                            l++;
-                        }
-
-                        long n = 0L + nums[i] + nums[j] + nums[l] + nums[r];
+                        long n = (long) nums[i] + nums[j] + nums[l] + nums[r];
                         if (n == target) {
                             res.add(Arrays.asList(nums[i], nums[j], nums[l], nums[r]));
 
-                            do {
-                                r--;
+                            while (l < r && nums[l] == nums[l + 1]) {
                                 l++;
-                            } while (nums[l] == nums[l - 1] && nums[r] == nums[r + 1] &&  l < r );
-
-                            continue;
-                        }
-
-                        if (n > target) {
+                            }
+                            l++;
+                            while (l < r && nums[r] == nums[r - 1]) {
+                                r--;
+                            }
+                            r--;
+                        } else if (n > target) {
                             r--;
                         }else {
                             l++;

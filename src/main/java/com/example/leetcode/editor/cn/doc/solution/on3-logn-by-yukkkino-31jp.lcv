@@ -1,0 +1,86 @@
+### 解题思路
+
+其实是和三数之和一样的思路
+
+排序是为了方便去重和【剪枝】
+
+具体地，枚举 i j k ，z = target - (arr[i] + arr[j] + arr[k]),若能在[k+1,len]中找到z，即找到了一条
+四元组
+
+那如何快速找到z呢，因为数组是有序的，二分查找就呼之欲出了：
+
+为了能找到想要的z，对于[k+1,z]进行二分查找，在这里我返回的是z（索引值）。
+
+### 代码
+
+* java
+
+```java
+class Solution {
+    public List<List<Integer>> fourSum(int[] arr, int target) {
+        if (arr.length < 4 || arr == null) return new ArrayList<List<Integer>>();
+        int len = arr.length;
+        Arrays.sort(arr);
+        List<List<Integer>> result = new ArrayList<>();
+
+        for (int i = 0; i < len - 3; i++) {
+
+            if (i > 0 && arr[i] == arr[i - 1]) {
+                continue;
+            }
+
+            if (arr[i] + arr[i + 1] + arr[i + 2] + arr[i + 3] > target) {
+                break;
+            }
+            if (arr[i] + arr[len - 3] + arr[len - 2] + arr[len - 1] < target) {
+                continue;
+            }
+
+            for (int j = i + 1; j < len - 2; j++) {
+
+                if (j > i + 1 && arr[j] == arr[j-1]){
+                    continue;
+                }
+
+                for (int k = j + 1; k < len - 1; k++) {
+
+                    if (k > j + 1 && arr[k] == arr[k-1]){
+                        continue;
+                    }
+                    int t = target - (arr[i] + arr[j] + arr[k]);
+
+                    int index = check(arr, t, k + 1);
+                    if (index > j) {
+                        List<Integer> cur = new ArrayList<>();
+                        cur.add(arr[i]);
+                        cur.add(arr[j]);
+                        cur.add(arr[k]);
+                        cur.add(arr[index]);
+                        result.add(cur);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+    private int check(int[] arr, int t, int start) {
+        int len = arr.length;
+        int left = start;
+        int right = len - 1;
+
+        while (left <= right) {
+            int mid = (left + right) >> 1;
+            if (arr[mid] == t) {
+                return mid;
+            } else if (arr[mid] < t) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        return -1;
+    }
+}
+```
+
